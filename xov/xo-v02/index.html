@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tic-Tac-Donuts!</title>
+    <style>
+        .title {
+            font-size: 28px;
+        }
+        .xo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 4px;
+            height: 400px;
+            width: 300px;
+            outline: 1px solid #28f;
+        }
+        div[class|="xoi"] {
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: 1px solid #f82;
+        }
+        div[class|="xoi"]:hover {
+            background-color: #8882;
+        }
+        /* div[class|="xoi"]:not(div[data-xoi="false"]) {
+            background-color: #2822;
+        } */
+        div[data-xoi="🥦"] {
+            background-color: #2a2a;
+        }
+        div[data-xoi="❌"] {
+            background-color: #a22a;
+        }
+        div[data-xoi="🍩"] {
+            background-color: #ff5a;
+        }
+        div[data-xoi="🎊"] {
+            background-color: #777a;
+        }
+
+        .xoir {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            grid-column: 2;
+        }
+        .reset {
+            height: 24px; width: max-content;
+            margin: 4px 8px;
+            border: 2px outset #888;
+            background-color: #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .reset:hover {
+            background-color: #a21;
+            transition: background-color 100ms ease-in-out;
+        }
+        #result {
+            color: #888;
+        }
+        div[class*="hidden"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Tic-Tac-Donuts! 🍩</div>
+
+    <!-- .xo>.xoi-$*9[data-xoi="false"]+.reset -->
+    <div class="xo">
+        <div class="xoi-0 hidden" data-xoi="false">&nbsp;</div>
+        <div class="xoi-1" data-xoi="false">&nbsp;</div>
+        <div class="xoi-2" data-xoi="false">&nbsp;</div>
+        <div class="xoi-3" data-xoi="false">&nbsp;</div>
+        <div class="xoi-4" data-xoi="false">&nbsp;</div>
+        <div class="xoi-5" data-xoi="false">&nbsp;</div>
+        <div class="xoi-6" data-xoi="false">&nbsp;</div>
+        <div class="xoi-7" data-xoi="false">&nbsp;</div>
+        <div class="xoi-8" data-xoi="false">&nbsp;</div>
+        <div class="xoi-9" data-xoi="false">&nbsp;</div>
+        <div class="xoir"><button class="reset" data-reset="true">Reset</button></div>
+    </div>
+
+    <div id="result">&nbsp;</div>
+
+    <script>
+        let player1 = '❌'
+        // let player1 = '🥦'
+        let player2 = '🍩'
+        let turn = player1;
+        window.addEventListener('click', (ev) => {
+            if(ev.target.dataset.xoi != null && ev.target.dataset.xoi == 'false'){
+                ev.target.innerHTML = turn;
+                ev.target.dataset.xoi = turn;
+                let crowned = VictoryCheck();
+                if(crowned){
+                    document.getElementById('result').innerHTML = `👑 ➡ ${crowned} has won!`;
+                    LockOnVictory();
+                }
+                if(turn == player1){turn = player2;}
+                else {turn = player1;}
+            }
+            if(ev.target.dataset.reset != null && ev.target.dataset.reset == 'true'){
+                let xoiList = document.querySelectorAll('div[class|="xoi"]');
+                console.log(xoiList);
+                xoiList.forEach(xoi => {
+                    xoi.innerHTML = '&nbsp;';
+                    xoi.dataset.xoi = 'false';
+                    turn = player1;
+                });
+                document.getElementById('result').innerHTML = `&nbsp;`;
+            }
+        })
+        // var data = {};
+        // data['xov01'] = [];
+        const nikrown = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
+        function VictoryCheck(){
+            let xoiList = document.querySelectorAll('div[class|="xoi"]');
+            let crown = 0;
+            nikrown.forEach(line => {
+                let line_count = 0;
+                // console.log(`line: ${line}`);
+                line.forEach(cell_index => {
+                    console.log(`cell_index: ${cell_index}`);
+                    if(xoiList[cell_index].dataset.xoi == turn){
+                        line_count++;    
+                    }
+                });
+                // console.log(`line_count: ${line_count}`);
+                if(line_count > 2){
+                    crown += 1;
+                }
+                // console.log(`crown: ${crown}`);
+            });
+            if(crown > 0){
+                return turn;
+            } else {
+                return false;
+            }
+        }
+
+        function print_xo(xot){
+            let res = '';
+            xot.forEach(line => {
+                line.forEach(cell => {
+                    res += cell;
+                })
+                res += '\n';
+            });
+            console.log(res);
+        }
+
+
+        function LockOnVictory(){
+            let xoiList = document.querySelectorAll('div[class|="xoi"]');
+                xoiList.forEach(xoie => {
+                    if(xoie.dataset.xoi != null && xoie.dataset.xoi == 'false'){
+                        xoie.innerHTML = '🎉';
+                        xoie.dataset.xoi = '🎊';
+                    }
+                });
+        }
+
+    </script>
+</body>
+</html>
