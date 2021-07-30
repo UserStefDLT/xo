@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tic-Tac-Donuts!</title>
+    <style>
+        .title {
+            font-size: 28px;
+        }
+        .xo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 4px;
+            height: 400px;
+            width: 300px;
+            outline: 1px solid #28f;
+        }
+        div[class|="xoi"] {
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: 1px solid #f82;
+        }
+        div[class|="xoi"]:hover {
+            background-color: #f822;
+        }
+        /* div[class|="xoi"]:not(div[data-xoi="false"]) {
+            background-color: #2822;
+        } */
+        div[data-xoi="🥦"] {
+            background-color: #2a2a;
+        }
+        div[data-xoi="🍩"] {
+            background-color: #ff5a;
+        }
+        .xoir {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            grid-column: 2;
+        }
+        .reset {
+            height: 24px; width: max-content;
+            margin: 4px 8px;
+            border: 2px outset #888;
+            background-color: #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .reset:hover {
+            background-color: #a21;
+            transition: background-color 100ms ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Tic-Tac-Donuts! 🍩</div>
+
+    <!-- .xo>.xoi-$*9[data-xoi="false"]+.reset -->
+    <div class="xo">
+        <div class="xoi-1" data-xoi="false">&nbsp;</div>
+        <div class="xoi-2" data-xoi="false">&nbsp;</div>
+        <div class="xoi-3" data-xoi="false">&nbsp;</div>
+        <div class="xoi-4" data-xoi="false">&nbsp;</div>
+        <div class="xoi-5" data-xoi="false">&nbsp;</div>
+        <div class="xoi-6" data-xoi="false">&nbsp;</div>
+        <div class="xoi-7" data-xoi="false">&nbsp;</div>
+        <div class="xoi-8" data-xoi="false">&nbsp;</div>
+        <div class="xoi-9" data-xoi="false">&nbsp;</div>
+        <div class="xoir"><button class="reset" data-reset="true">Reset</button></div>
+        <!-- <button class="reset" data-reset="true">Reset</button> -->
+    </div>
+
+
+    <script>
+        let player1 = '🥦'
+        let player2 = '🍩'
+        let turn = player1;
+        window.addEventListener('click', (ev) => {
+            if(ev.target.dataset.xoi != null && ev.target.dataset.xoi == 'false'){
+                ev.target.innerHTML = turn;
+                ev.target.dataset.xoi = turn;
+                if(turn == player1){turn = player2;}
+                else {turn = player1;}
+            }
+            if(ev.target.dataset.reset != null && ev.target.dataset.reset == 'true'){
+                let xoiList = document.querySelectorAll('div[class|="xoi"]');
+                console.log(xoiList);
+                xoiList.forEach(xoi => {
+                    xoi.innerHTML = '&nbsp;';
+                    xoi.dataset.xoi = 'false';
+                    turn = player1;
+                });
+            }
+        })
+        function Victory(){
+
+        }
+    </script>
+</body>
+</html>
